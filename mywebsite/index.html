@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Музыкальная школа МузАкадемия</title>
+    <link rel="icon" href="/иконка гитара с нотами.jpg" type="image/jpg" sizes="64x64">
+    <link rel="stylesheet" href="style.css">
+    <style> body { font-family: Arial, sans-serif; background-color: #f7f7f7; text-align: center; color: #333; margin-top: 5%; } /* Заголовок школы */ h1 { font-size: 3em; font-weight: bold; color: #ffa500; margin-bottom: 20px; } /* Описание школы */ p { font-size: 1.2em; line-height: 1.5; max-width: 600px; margin: auto; padding: 0 20px; } /* Контейнер формы */ .form-container { display: flex; justify-content: center; align-items: center; flex-direction: column; margin-top: 30px; } /* Поле ввода телефона */ input[type="tel"] { width: 300px; height: 40px; border-radius: 5px; border: none; box-shadow: 0 0 10px rgba(0,0,0,.1); margin-bottom: 20px; padding-left: 10px; font-size: 16px; } /* Кнопка подачи заявки */ button { background-color: #ffa500; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; transition: all 0.3s ease-in-out; font-size: 16px; } /* Эффект нажатия кнопки */ button:hover { transform: scale(1.05); background-color: #cc8b00; } /* Стиль футера */ footer { position: absolute; bottom: 20px; right: 20px; font-size: 14px; color: #666; } /* Меню */ nav ul { list-style-type: none; margin: 0; padding: 0; overflow: hidden; background-color: #fff; position: fixed; top: 0; left: 0; z-index: 1000; } li a { display: block; color: black; text-decoration: none; padding: 14px 16px; } li a:hover { background-color: #ddd; } /* Выпадающее меню */ .dropdown { float: left; overflow: hidden; } .dropdown .dropbtn { font-size: 16px; border: none; outline: none; color: black; padding: 14px 16px; background-color: inherit; font-family: inherit; margin: 0; } .dropdown-content { display: none; position: absolute; background-color: #f9f9f9; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; } .dropdown-content a { float: none; color: black; padding: 12px 16px; text-decoration: none; display: block; text-align: left; } .dropdown-content a:hover { background-color: #ddd; } .show { display: block; } </style>
+</head>
+
+<body>
+    <nav>
+        <div class="menu-container">
+        <span class="menu-title">Меню</span>
+        <div class="dropdown-content">
+            <a href="#">Цены</a>
+            <a href="#">Преподаватели</a>
+            <a href="#">О нас</a>
+        </div>
+    </div>
+    </nav>
+
+    <h1>МузАкадемия</h1>
+    <p>Приглашаем на онлайн-обучение игре на гитаре людей всех возрастов!</p>
+<div class="form-container">
+    <span style="font-size: 1.5em;">Оставить заявку:</span><br>
+
+    <form id="callback-form">
+    <input type="tel" id="phone" placeholder="Ваш телефон" maxlength="15"><br>
+    <input type="text" id="name" placeholder="Ваше имя" maxlength="30"><br>
+    <button type="submit">ЖДУ ЗВОНОК</button>
+    </form>
+</div>
+    <footer>
+        Наши контакты:<br>
+        <br>
+        +7 (999) 123-45-67 <img src="трубка.png" alt="Звонок" type="image/png" width="16" height="16"> <img src="ватсап.png" alt="Whats'App" type="image/png" width="16" height="16"><br>
+        @muzakademiya_guitar_school <img src="телеграм.webp" alt="Telegram" type="image/webp" width="16" height="16">
+    </footer>
+    
+    <script> const dropdown =
+document.querySelector('.dropdown'); const dropContent = document.querySelector('.dropdown-content'); 
+dropdown.addEventListener('mouseover', () => { dropContent.style.display = 'block'; });
+dropdown.addEventListener('mouseout', () => { dropContent.style.display = 'none'; }); </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const phoneInput = document.getElementById('phone');
+    const nameInput = document.getElementById('name');
+    const form = document.getElementById('callback-form');
+
+    if (phoneInput) {
+        phoneInput.addEventListener('keypress', function (e) {
+            if (!/[0-9]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    if (nameInput) {
+        nameInput.addEventListener('keypress', function (e) {
+            if (!/[А-Яа-яЁёA-Za-z\s]/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyFDI373xCErpLEJVTivdkaMZaJc22ZED-URqSLis6QyTVv6F6TC8tGEPi0GPwh-A/exec';
+
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const phone = phoneInput.value.trim();
+            const name = nameInput.value.trim();
+
+            if (!phone || !name) {
+                alert('Пожалуйста, заполните оба поля.');
+                return;
+            }
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ name: name, phone: phone }),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => {
+                alert('✅ Спасибо! Ваша заявка успешно отправлена.');
+                form.reset();
+            })
+            .catch(() => {
+                alert('❌ Ошибка соединения с таблицей.');
+            });
+        });
+    }
+});
+</script>
+</body>
+</html>
